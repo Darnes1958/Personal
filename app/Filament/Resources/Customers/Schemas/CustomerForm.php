@@ -16,28 +16,28 @@ class CustomerForm
         return $schema
             ->components([
                 TextInput::make('name')
-                    ->label('الإسم')
+                    ->translateLabel()
                     ->required(),
                 TextInput::make('email')
-                    ->label('البريد الإلكتروني')
+
                     ->email(),
                 TextInput::make('tel1')
-                    ->label('هاتف 1')
+
                     ->tel(),
                 TextInput::make('tel2')
-                    ->label('هاتف 2')
+
                     ->tel(),
-                TextInput::make('other')->label('بيانات أخري'),
-                TextInput::make('address')->label('العنوان'),
+                TextInput::make('other'),
+                TextInput::make('address'),
                 Toggle::make('visible')
-                    ->label('فعال')
+
                     ->default(1)
                     ->visible(function ($operation){
                         return $operation=='edit';
                     })
                     ->required(),
                 Radio::make('kind')
-                    ->label('التصنيف')
+
 
                     ->options(Kind::class)
                     ->required()
