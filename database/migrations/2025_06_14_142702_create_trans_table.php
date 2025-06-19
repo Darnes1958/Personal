@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->date('tran_date');
             $table->smallInteger('tran_type');
-            $table->decimal('tran_value');
+            $table->decimal('tran_value',12,3);
             $table->string('notes')->nullable();
             $table->foreignIdFor(Customer::class)->constrained();
             $table->foreignIdFor(Acc::class)->constrained();

@@ -21,7 +21,7 @@ class CustomerResource extends Resource
     protected static ?string $model = Customer::class;
 
 
-    protected static ?string $navigationLabel='العملاء';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::Users;
 
     public static function form(Schema $schema): Schema
@@ -44,6 +44,14 @@ class CustomerResource extends Resource
         return [
             //
         ];
+    }
+    public static function getModelLabel(): string
+    {
+        return __('Customer');
+    }
+    public static function getPluralModelLabel(): string
+    {
+        return __('Customers');
     }
 
     public static function getPages(): array

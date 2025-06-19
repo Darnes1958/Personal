@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('accs', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('num')->nullable()->unique();
+            $table->string('acc_num')->nullable()->unique();
             $table->smallInteger('kind');
-            $table->decimal('balance', 13, 2)->default(0);
+            $table->decimal('previous_balance', 13, 2)->default(0);
             $table->foreignIdFor(\App\Models\User::class);
             $table->timestamps();
         });
