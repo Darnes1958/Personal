@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Setting;
+use Filament\Actions\CreateAction;
 use Filament\Auth\Http\Responses\Contracts\LoginResponse;
 use Filament\Auth\Http\Responses\Contracts\LogoutResponse;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -14,6 +17,8 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
+use Spatie\Browsershot\Browsershot;
+use Spatie\LaravelPdf\Facades\Pdf;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -40,8 +45,21 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Model::unguard();
+        Pdf::default()
 
+            ->withBrowsershot(function (Browsershot $shot) {
+                $shot->noSandbox()
+                    ->timeout(240)
+                    ->setChromePath(Setting::first()->exePath);
+            })
+            ->margins(10, 10, 20, 10, );
+        Model::unguard();
+        CreateAction::configureUsing(function (CreateAction $comp): void {
+            $comp->Label('إضافة');
+        });
+        DatePicker::configureUsing(function (DatePicker $datePicker): void {
+            $datePicker->translateLabel();
+        });
         Radio::configureUsing(function (Radio $radio): void {
              $radio->inline()->inlineLabel()->translateLabel();
         });

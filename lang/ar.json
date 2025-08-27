@@ -21,5 +21,16 @@
     "Accs" : "حسابات" ,
     "Acc" : "حساب",
     "Created at" : "تاريخ الإدخال",
-    "Updated at" : "تاريخ التعديل"
+    "Updated at" : "تاريخ التعديل",
+    "Invoice number" : "رقم الفاتورة",
+    "Invoice date" : "تاريخ الفاتورة",
+
+    "Amount" : "السعر",
+    "Bank" : "المصرف",
+    "bank_id" : "المصرف",
+    "Model" : "الموديل",
+    "Color" : "اللون",
+    "Engine number" : "رقم المحرك",
+    "Chassis number" : "رقم الهيكل",
+    "Specifications" : "المواصفات"
 }
