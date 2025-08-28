@@ -45,6 +45,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
         Pdf::default()
 
             ->withBrowsershot(function (Browsershot $shot) {
@@ -54,6 +55,10 @@ class AppServiceProvider extends ServiceProvider
             })
             ->margins(10, 10, 20, 10, );
         Model::unguard();
+
+        Table::configureUsing(function (Table $table) {
+            $table->defaultNumberLocale('nl');
+        });
         CreateAction::configureUsing(function (CreateAction $comp): void {
             $comp->Label('إضافة');
         });

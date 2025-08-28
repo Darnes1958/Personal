@@ -15,6 +15,9 @@ class UsersTable
     {
         return $table
             ->columns([
+                TextColumn::make('company')
+                    ->searchable(),
+
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('email')

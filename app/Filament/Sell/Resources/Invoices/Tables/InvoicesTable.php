@@ -31,6 +31,7 @@ class InvoicesTable
                     ->sortable(),
                 TextColumn::make('invoice_number')
                     ->numeric()
+
                     ->sortable(),
                 TextColumn::make('specifications')
                     ->searchable(),
@@ -66,8 +67,8 @@ class InvoicesTable
                     ->color('primary')
                     ->action(function (Model $record) {
                         Pdf::view('PDF.PdfInvoice',['record'=>$record,])
-                            ->footerView('PDF.footer')
-                            ->margins(20,10,20,10)
+                            //->footerView('PDF.footer')
+                            ->margins(20,20,20,20)
                             ->save(public_path().'/Invoice.pdf');
 
                         return Response::download(public_path().'/Invoice.pdf',

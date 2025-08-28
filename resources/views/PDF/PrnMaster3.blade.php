@@ -11,11 +11,11 @@
 
 
       tr {
-          line-height: 18px;
+          line-height: 30px;
       }
       th {
           text-align: center;
-          border: 1pt solid  gray;
+
           font-size: 12px;
           height: 30px;
       }
@@ -29,14 +29,12 @@
       }
 
       td {
-          font-size: 12px;
+          font-size: 18px;
           text-align: right;
-          border: 1pt solid  lightgray;
+
       }
 
-      br[style] {
-          display:none;
-      }
+
 
 
   </style>

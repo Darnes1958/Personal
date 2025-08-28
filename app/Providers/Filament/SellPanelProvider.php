@@ -2,6 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Auth\Login;
+use App\Filament\Widgets\StatsOverView;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -29,6 +31,7 @@ class SellPanelProvider extends PanelProvider
             ->resourceEditPageRedirect('index')
             ->breadcrumbs(false)
             ->maxContentWidth('Full')
+            ->login(Login::class)
             ->id('sell')
             ->path('sell')
             ->colors([
@@ -41,8 +44,7 @@ class SellPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Sell/Widgets'), for: 'App\Filament\Sell\Widgets')
             ->widgets([
-                AccountWidget::class,
-                FilamentInfoWidget::class,
+                StatsOverView::class,
             ])
             ->middleware([
                 EncryptCookies::class,

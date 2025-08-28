@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Users\Schemas;
 
 use App\Enums\hisSystem;
+use App\Models\OurCompany;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -26,6 +27,12 @@ class UserForm
                     ->required(),
                 Select::make('hisSystem')
                 ->options(hisSystem::class),
+                Select::make('company')
+                    ->searchable()
+                    ->preload()
+                    ->options(OurCompany::all()->pluck('Company', 'Company')),
+
+
             ]);
     }
 }
