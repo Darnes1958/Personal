@@ -25,6 +25,10 @@ class LoginResponse extends \Filament\Auth\Http\Responses\LoginResponse
           return redirect(Filament::getPanel('sell')->getPath());
       }
 
+      if (auth()->user()->hisSystem->value=='acc') {
+
+          return redirect(Filament::getPanel('acc')->getPath());
+      }
 
 
 

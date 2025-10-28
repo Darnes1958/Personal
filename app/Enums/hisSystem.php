@@ -8,6 +8,7 @@ enum hisSystem: string implements HasLabel,HasColor
 {
   case Personal = 'personal';
   case Sell = 'sell';
+    case Acc = 'acc';
 
 
 
@@ -21,6 +22,7 @@ enum hisSystem: string implements HasLabel,HasColor
     return match ($this) {
         self::Sell => 'info',
         self::Personal => 'danger',
+        self::Acc => 'primary',
     };
   }
 
