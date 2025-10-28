@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Pages;
+namespace App\Filament\Acc\Pages;
 
 use Filament\Schemas\Schema;
 use App\Enums\AccLevel;
@@ -8,14 +8,14 @@ use App\Livewire\Traits\PublicTrait;
 use App\Models\Account;
 use App\Models\Kyde;
 use App\Models\KydeData;
-use Filament\Actions\StaticAction;
+
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Pages\Page;
 use Filament\Support\Enums\IconSize;
-use Filament\Tables\Actions\Action;
+
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
@@ -29,7 +29,7 @@ class Khashf extends Page implements HasForms,HasTable
     use PublicTrait;
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-document-text';
 
-    protected string $view = 'filament.pages.khashf';
+    protected string $view = 'filament.acc.pages.khashf';
     protected ?string $heading='';
     protected static ?string $model = KydeData::class;
 
@@ -51,7 +51,11 @@ class Khashf extends Page implements HasForms,HasTable
                 })
                 ->live()
                 ->columnSpan(2),
-               $this->getAcc_levelFromComponent()->columnSpan(2),
+               $this->getAcc_levelFromComponent()
+                   ->afterStateUpdated(function ($state){
+                       $this->acc_level=$state->value;
+                   })
+                   ->columnSpan(2),
             ])
             ->columns(6);
     }
@@ -59,7 +63,8 @@ class Khashf extends Page implements HasForms,HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->query(function (KydeData $kydeData) {
+            ->query(function () {
+                info($this->account_id);
                 if (!$this->account_id) $kydeData=KydeData::where('account_id', $this->account_id);
                 else
                 $kydeData=KydeData::where('account_id', $this->account_id)

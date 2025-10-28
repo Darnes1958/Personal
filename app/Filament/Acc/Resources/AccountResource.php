@@ -19,6 +19,7 @@ use App\Models\KydeData;
 use Filament\Forms;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -197,10 +198,18 @@ class AccountResource extends Resource
                     ->sortable()
                     ->badge()
                     ->label('المستوي'),
+                Tables\Columns\IconColumn::make('is_active')->boolean()->label('فعال')
             ])
             ->filters([
-                //
-            ])
+                Tables\Filters\Filter::make('is_active')
+                    ->query(fn (Builder $query): Builder => $query->where('is_active', true))
+                    ->label('فعال'),
+                Tables\Filters\SelectFilter::make('acc_level')
+                    ->options(AccLevel::class)
+                    ->modifyFormFieldUsing(fn(Select $field) => $field->inlineLabel())
+                    ->label('المستوي')
+            ],Tables\Enums\FiltersLayout::AboveContent)
+            ->deferFilters(false)
             ->recordActions([
                EditAction::make()
                 ->iconButton(),
@@ -252,6 +261,13 @@ class AccountResource extends Resource
 
 
                    $record->delete();
+                   if ($record->acc_level->value==4)
+                       if (!Account::where('son_id',$record->son_id)->exists()) Account::find($record->son_id)->update(['is_active'=>1]);
+                   if ($record->acc_level->value==3)
+                       if (!Account::where('father_id',$record->father_id)->exists()) Account::find($record->father_id)->update(['is_active'=>1]);
+                   if ($record->acc_level->value==2)
+                       if (!Account::where('grand_id',$record->grand_id)->exists()) Account::find($record->grand_id)->update(['is_active'=>1]);
+
                }),
             ])
             ;

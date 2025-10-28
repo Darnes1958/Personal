@@ -14,13 +14,13 @@ class CreateKyde extends CreateRecord
 {
     protected static string $resource = KydeResource::class;
     protected ?string $heading='';
-    protected function getCreateFormAction(): Action
-    {
-        return parent::getCreateFormAction()
+ // protected function getCreateFormAction(): Action
+ // {
+ //     return parent::getCreateFormAction()
 
-            ->extraAttributes(['type' => 'button', 'wire:click' => 'create'])
-            ;
-    }
+ //         ->extraAttributes(['type' => 'button', 'wire:click' => 'create'])
+ //         ;
+ // }
     protected function getRedirectUrl(): string
     {
         return static::getResource()::getUrl('index');
@@ -28,6 +28,7 @@ class CreateKyde extends CreateRecord
     protected function beforeCreate(): void
     {
         $collect=collect($this->data['KydeData']);
+
         $notfilled=$collect->where('mden',0)->where('daen',0)->first();
         if ($notfilled) {
             Notification::make()

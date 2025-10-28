@@ -26,6 +26,7 @@ class Account extends Model
 
     protected $casts=[
         'acc_level'=>AccLevel::class,
+        'is_active'=>'boolean',
     ];
     protected $appends = ['full_name'];
     public function getFullNameAttribute(){

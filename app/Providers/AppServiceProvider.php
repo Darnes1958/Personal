@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Filament\Acc\Pages\InpKyde;
+use App\Models\OurCompany;
 use App\Models\Setting;
 use Filament\Actions\CreateAction;
 use Filament\Auth\Http\Responses\Contracts\LoginResponse;
@@ -12,11 +14,18 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\Page;
+use Filament\Support\Assets\Js;
+use Filament\Support\Facades\FilamentAsset;
+use Filament\Support\Facades\FilamentView;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\View\View;
 use Spatie\Browsershot\Browsershot;
 use Spatie\LaravelPdf\Facades\Pdf;
 
@@ -57,7 +66,7 @@ class AppServiceProvider extends ServiceProvider
         Model::unguard();
 
         Table::configureUsing(function (Table $table) {
-            $table->defaultNumberLocale('nl');
+            $table->defaultNumberLocale('nl')->emptyStateHeading('لا توجد بيانات');
         });
         CreateAction::configureUsing(function (CreateAction $comp): void {
             $comp->Label('إضافة');
@@ -81,6 +90,26 @@ class AppServiceProvider extends ServiceProvider
             $column->translateLabel();
         });
         TextEntry::configureUsing(function (TextEntry $entry): void {$entry->translateLabel();});
+
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::USER_MENU_AFTER,
+            fn (): View => view('avatar',['compImage'=>OurCompany::where('company',Auth::user()->company)->first()->CompanyImg]),
+        );
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::GLOBAL_SEARCH_BEFORE,
+            fn (): string => Blade::render('@livewire(\'top-bar\')'),
+        );
+        FilamentAsset::register([
+            Js::make('example-external-script', 'https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js'),
+
+        ]);
+        FilamentView::registerRenderHook(
+            'panels::page.end',
+            fn (): View => view('analytics'),
+            scopes: [
+                InpKyde::class,
+                ],
+        );
 
 
     }

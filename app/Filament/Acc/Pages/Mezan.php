@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Filament\Pages;
+namespace App\Filament\Acc\Pages;
 
+use Filament\Schemas\Components\Text;
 use Filament\Schemas\Schema;
 use App\Enums\AccLevel;
 use App\Livewire\Traits\PublicTrait;
 use App\Models\Account;
 use App\Models\Accountsum;
-use Filament\Forms\Components\Component;
+
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -30,7 +31,7 @@ class Mezan extends Page implements HasForms,HasTable
     use PublicTrait;
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-document-text';
 
-    protected string $view = 'filament.pages.mezan';
+    protected string $view = 'filament.acc.pages.mezan';
     protected static ?string $navigationLabel='ميزان المراجعة';
 
 
@@ -68,16 +69,16 @@ class Mezan extends Page implements HasForms,HasTable
                     ->hidden(fn(): bool=>$this->acc_level==1)
                     ->label('الاسم بالكامل'),
                 ColumnGroup::make(
-                    function (){return new HtmlString('<span class="text-primary-400">بالمجاميع</span>');},[
+                    'بالمجاميع',[
                     $this->getMdenFormComponent(),
                     $this->getDaenFormComponent(),
 
-                ])->alignment(Alignment::Center),
+                ])->alignment(Alignment::Center)->extraHeaderAttributes(['class'=>'text-primary-400']),
                 ColumnGroup::make(
-                    function (){return new HtmlString('<span class="text-primary-400">بالأرصدة</span>');}, [
+                    'بالارصدة', [
                     $this->getMden2FormComponent(),
                     $this->getDaen2FormComponent(),
-                ])->alignment(Alignment::Center),
+                ])->alignment(Alignment::Center)->extraHeaderAttributes(['class'=>'text-green-500']),
 
 
             ]);
