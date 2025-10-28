@@ -4,10 +4,7 @@ namespace App\Livewire\Traits;
 
 
 use App\Enums\AccLevel;
-use App\Models\Rent;
-use App\Models\Renttran;
-use App\Models\Salary;
-use App\Models\Salarytran;
+
 
 use Carbon\Carbon;
 use DateTime;

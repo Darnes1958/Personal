@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Livewire\widgets\State1;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -41,7 +42,7 @@ class AccPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Acc/Widgets'), for: 'App\Filament\Acc\Widgets')
             ->widgets([
-
+              State1::class,
             ])
             ->middleware([
                 EncryptCookies::class,
