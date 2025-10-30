@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Acc\Pages\AccDashboard;
 use App\Livewire\widgets\State1;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -38,7 +39,7 @@ class AccPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/Acc/Resources'), for: 'App\Filament\Acc\Resources')
             ->discoverPages(in: app_path('Filament/Acc/Pages'), for: 'App\Filament\Acc\Pages')
             ->pages([
-
+              AccDashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Acc/Widgets'), for: 'App\Filament\Acc\Widgets')
             ->widgets([
