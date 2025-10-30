@@ -2,6 +2,7 @@
 
 namespace App\Filament\Acc\Resources;
 
+use App\Filament\PublicTrait;
 use Filament\Forms\Components\Repeater\TableColumn;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
@@ -23,6 +24,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\IconSize;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
@@ -33,10 +35,12 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Textarea;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\HtmlString;
 
 class KydeResource extends Resource
 {
+    use PublicTrait;
     protected static ?string $model = Kyde::class;
 
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -146,6 +150,7 @@ class KydeResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('updated_at','desc')
             ->columns([
                 TextColumn::make('id')
                     ->searchable()
@@ -160,13 +165,9 @@ class KydeResource extends Resource
                     ->sortable()
                     ->label('البيان'),
                 TextColumn::make('tot_mden')
-
-
                     ->label('مدين'),
                 TextColumn::make('tot_daen')
-
                     ->label('دائن'),
-
 
             ])
             ->filters([
@@ -206,6 +207,16 @@ class KydeResource extends Resource
                         'view-kyde-data-widget',
                         ['kyde_id' => $record->id],
                     )),
+                Action::make('print')
+                 ->iconButton()
+                 ->icon(Heroicon::Printer)
+                 ->action(function ($record) {
+
+                     return Response::download(self::ret_spatie($record,
+                         'PDF.kyde-pdf'
+                     ), 'filename.pdf', self::ret_spatie_header());
+
+                 })
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

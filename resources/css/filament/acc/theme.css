@@ -2,4 +2,5 @@
 
 @source '../../../../app/Filament/Acc/**/*';
 @source '../../../../resources/views/filament/acc/**/*';
+@source '../../../../resources/views/PDF/**/*';
 @source '../../../../vendor/defstudio/filament-searchable-input/resources/**/*.blade.php';

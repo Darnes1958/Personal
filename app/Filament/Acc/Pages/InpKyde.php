@@ -98,9 +98,10 @@ class InpKyde extends Page implements HasSchemas,HasTable
             $this->kydedata[$index]['account_id']=$this->account_id;
             $this->kydedata[$index]['mden']=$this->mden;
             $this->kydedata[$index]['daen']=$this->daen;
+            $this->kydedata[$index]['name']=$this->name;
         }
         else {
-            $this->kydedata[] =['account_id'=>$this->account_id,'mden'=>$this->mden,'daen'=>$this->daen,];
+            $this->kydedata[] =['account_id'=>$this->account_id,'mden'=>$this->mden,'daen'=>$this->daen,'name'=>$this->name,];
         }
       $this->sumArr();
     }
@@ -251,6 +252,7 @@ class InpKyde extends Page implements HasSchemas,HasTable
            ->records(fn(): Collection=> collect($this->kydedata))
            ->columns([
                TextColumn::make('account_id'),
+               TextColumn::make('name'),
                TextColumn::make('mden'),
                TextColumn::make('daen'),
            ])
@@ -264,7 +266,7 @@ class InpKyde extends Page implements HasSchemas,HasTable
                        unset($this->kydedata[$record['__key']]);
                        array_values($this->kydedata);
                        $this->sumArr();
-                       $this->table->render();
+                       $this->resetTable();
                    }
                    )
 
