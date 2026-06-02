@@ -8,8 +8,8 @@ enum hisSystem: string implements HasLabel,HasColor
 {
   case Personal = 'personal';
   case Sell = 'sell';
-    case Acc = 'acc';
-
+  case Acc = 'acc';
+    case Card = 'card';
 
 
 
@@ -23,6 +23,7 @@ enum hisSystem: string implements HasLabel,HasColor
         self::Sell => 'info',
         self::Personal => 'danger',
         self::Acc => 'primary',
+        self::Card => 'success',
     };
   }
 

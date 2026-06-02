@@ -14,7 +14,11 @@ class LoginResponse extends \Filament\Auth\Http\Responses\LoginResponse
     // You can use the Filament facade to get the current panel and check the ID
 
 
+      if (auth()->user()->hisSystem->value=='card') {
+          info('yes');
 
+          return redirect(Filament::getPanel('card')->getPath());
+      }
       if (auth()->user()->hisSystem->value=='personal') {
 
           return redirect(Filament::getPanel('admin')->getPath());

@@ -11,7 +11,8 @@
         "filament/filament": "~4.0",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
-        "spatie/laravel-pdf": "^1.7"
+        "spatie/laravel-pdf": "^1.7",
+        "wallacemartinss/filament-whatsapp-conector": "^1.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
