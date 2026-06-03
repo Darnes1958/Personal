@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Auth\Login;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -25,11 +26,17 @@ class CardPanelProvider extends PanelProvider
     {
         return $panel
             ->viteTheme('resources/css/filament/admin/theme.css')
+            ->sidebarFullyCollapsibleOnDesktop()
+            ->resourceCreatePageRedirect('index')
+            ->resourceEditPageRedirect('index')
+            ->breadcrumbs(false)
+            ->maxContentWidth('Full')
             ->id('card')
             ->path('card')
             ->colors([
                 'primary' => Color::Amber,
             ])
+            ->login(Login::class)
             ->discoverResources(in: app_path('Filament/Card/Resources'), for: 'App\Filament\Card\Resources')
             ->discoverPages(in: app_path('Filament/Card/Pages'), for: 'App\Filament\Card\Pages')
             ->pages([

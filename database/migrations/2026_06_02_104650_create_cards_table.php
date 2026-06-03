@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('id_no');
             $table->date('card_date');
             $table->integer('ical_no');
-            $table->string('notes');
+            $table->string('notes')->nullable();
             $table->timestamps();
         });
     }

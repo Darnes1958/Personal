@@ -2,6 +2,7 @@
 
 namespace App\Filament\Card\Resources\Cards\Schemas;
 
+use App\Models\Card;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
@@ -13,6 +14,7 @@ class CardForm
         return $schema
             ->components([
                 TextInput::make('ser')
+                    ->default(fn()=>Card::max('ser') + 1)
                     ->required()
                     ->numeric(),
                 TextInput::make('name')
@@ -30,8 +32,8 @@ class CardForm
                 TextInput::make('ical_no')
                     ->required()
                     ->numeric(),
-                TextInput::make('notes')
-                    ->required(),
+                TextInput::make('notes'),
+
             ]);
     }
 }
