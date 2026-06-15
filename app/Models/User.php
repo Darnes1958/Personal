@@ -22,6 +22,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'hisSystem',
+        'company',
+        'is_programmer',
     ];
 
     /**
@@ -45,6 +48,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'hisSystem' => hisSystem::class,
+            'is_programmer' => 'boolean',
         ];
     }
 }
