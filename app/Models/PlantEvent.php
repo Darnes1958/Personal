@@ -24,6 +24,6 @@ class PlantEvent extends Model
 
     public function images(): HasMany
     {
-        return $this->hasMany(PlantEventImage::class)->orderBy('sort_order');
+        return $this->hasMany(PlantEventImage::class);
     }
 }

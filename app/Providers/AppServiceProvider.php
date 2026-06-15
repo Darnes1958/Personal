@@ -23,6 +23,8 @@ use Filament\Tables\Table;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\View;
@@ -54,6 +56,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->ensureUploadDirectories();
 
         Pdf::default()
 
@@ -112,5 +115,24 @@ class AppServiceProvider extends ServiceProvider
         );
 
 
+    }
+
+    protected function ensureUploadDirectories(): void
+    {
+        $directories = [
+            storage_path('app/private/livewire-tmp'),
+            storage_path('app/public/garden/plants/cards'),
+            storage_path('app/public/garden/events'),
+        ];
+
+        foreach ($directories as $directory) {
+            if (! File::isDirectory($directory)) {
+                File::makeDirectory($directory, 0755, true);
+            }
+        }
+
+        if (Storage::disk('local')->directoryMissing('livewire-tmp')) {
+            Storage::disk('local')->makeDirectory('livewire-tmp');
+        }
     }
 }
