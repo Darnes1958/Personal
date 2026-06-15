@@ -10,12 +10,16 @@ enum hisSystem: string implements HasLabel,HasColor
   case Sell = 'sell';
   case Acc = 'acc';
     case Card = 'card';
+  case Garden = 'garden';
 
 
 
   public function getLabel(): ?string
   {
-      return str_replace('_', ' ',  $this->name);
+      return match ($this) {
+          self::Garden => 'حديقتي',
+          default => str_replace('_', ' ', $this->name),
+      };
   }
   public function getColor(): string | array | null
   {
@@ -24,6 +28,7 @@ enum hisSystem: string implements HasLabel,HasColor
         self::Personal => 'danger',
         self::Acc => 'primary',
         self::Card => 'success',
+        self::Garden => 'success',
     };
   }
 
