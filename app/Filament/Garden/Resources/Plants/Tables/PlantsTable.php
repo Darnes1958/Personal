@@ -4,6 +4,8 @@ namespace App\Filament\Garden\Resources\Plants\Tables;
 
 use App\Enums\Garden\PlantCategory;
 use App\Enums\Garden\PlantStatus;
+use App\Models\PlantLocation;
+use App\Models\PlantVariety;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -27,10 +29,11 @@ class PlantsTable
                     ->label('الاسم')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('variety')
+                TextColumn::make('plantVariety.name')
                     ->label('الصنف')
                     ->searchable()
-                    ->toggleable(),
+                    ->sortable()
+                    ->placeholder('—'),
                 TextColumn::make('category')
                     ->label('التصنيف')
                     ->badge()
@@ -39,10 +42,11 @@ class PlantsTable
                     ->label('تاريخ الزراعة')
                     ->date()
                     ->sortable(),
-                TextColumn::make('location')
+                TextColumn::make('plantLocation.name')
                     ->label('الموقع')
                     ->searchable()
-                    ->toggleable(),
+                    ->sortable()
+                    ->placeholder('—'),
                 TextColumn::make('status')
                     ->label('الحالة')
                     ->badge()
@@ -60,6 +64,12 @@ class PlantsTable
                 SelectFilter::make('status')
                     ->label('الحالة')
                     ->options(PlantStatus::class),
+                SelectFilter::make('plant_variety_id')
+                    ->label('الصنف')
+                    ->options(fn () => PlantVariety::query()->active()->orderBy('name')->pluck('name', 'id')),
+                SelectFilter::make('plant_location_id')
+                    ->label('الموقع')
+                    ->options(fn () => PlantLocation::query()->active()->orderBy('name')->pluck('name', 'id')),
             ])
             ->recordActions([
                 ViewAction::make(),

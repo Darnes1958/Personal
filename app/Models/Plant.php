@@ -24,6 +24,16 @@ class Plant extends Model
         return $this->belongsTo(PlantingGuide::class);
     }
 
+    public function plantVariety(): BelongsTo
+    {
+        return $this->belongsTo(PlantVariety::class);
+    }
+
+    public function plantLocation(): BelongsTo
+    {
+        return $this->belongsTo(PlantLocation::class);
+    }
+
     public function events(): HasMany
     {
         return $this->hasMany(PlantEvent::class)->orderByDesc('event_date');

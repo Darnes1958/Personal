@@ -22,7 +22,7 @@ class PlantInfolist
                             ->height(120),
                         TextEntry::make('name')
                             ->label('الاسم'),
-                        TextEntry::make('variety')
+                        TextEntry::make('plantVariety.name')
                             ->label('الصنف')
                             ->placeholder('—'),
                         TextEntry::make('category')
@@ -31,7 +31,7 @@ class PlantInfolist
                         TextEntry::make('planted_at')
                             ->label('تاريخ الزراعة')
                             ->date(),
-                        TextEntry::make('location')
+                        TextEntry::make('plantLocation.name')
                             ->label('الموقع')
                             ->placeholder('—'),
                         TextEntry::make('status')

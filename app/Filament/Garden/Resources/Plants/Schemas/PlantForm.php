@@ -10,6 +10,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
 
 class PlantForm
@@ -23,10 +24,25 @@ class PlantForm
                     ->required()
                     ->maxLength(255)
                     ->placeholder('طماطم — دفعة أبريل'),
-                TextInput::make('variety')
+                Select::make('plant_variety_id')
                     ->label('الصنف')
-                    ->maxLength(255)
-                    ->placeholder('طماطم شيري'),
+                    ->relationship(
+                        name: 'plantVariety',
+                        titleAttribute: 'name',
+                        modifyQueryUsing: fn ($query) => $query->active()->orderBy('name'),
+                    )
+                    ->searchable()
+                    ->preload()
+                    ->createOptionForm([
+                        TextInput::make('name')
+                            ->label('اسم الصنف')
+                            ->required()
+                            ->maxLength(255),
+                        Toggle::make('is_active')
+                            ->label('نشط')
+                            ->default(true),
+                    ])
+                    ->native(false),
                 Select::make('category')
                     ->label('التصنيف')
                     ->options(PlantCategory::class)
@@ -41,10 +57,25 @@ class PlantForm
                 DatePicker::make('planted_at')
                     ->label('تاريخ الزراعة')
                     ->default(now()),
-                TextInput::make('location')
+                Select::make('plant_location_id')
                     ->label('الموقع')
-                    ->maxLength(255)
-                    ->placeholder('الحوض الشرقي'),
+                    ->relationship(
+                        name: 'plantLocation',
+                        titleAttribute: 'name',
+                        modifyQueryUsing: fn ($query) => $query->active()->orderBy('name'),
+                    )
+                    ->searchable()
+                    ->preload()
+                    ->createOptionForm([
+                        TextInput::make('name')
+                            ->label('اسم الموقع')
+                            ->required()
+                            ->maxLength(255),
+                        Toggle::make('is_active')
+                            ->label('نشط')
+                            ->default(true),
+                    ])
+                    ->native(false),
                 Select::make('status')
                     ->label('الحالة')
                     ->options(PlantStatus::class)
