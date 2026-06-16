@@ -4,8 +4,11 @@ namespace App\Filament\Garden\Resources\Plants\Tables;
 
 use App\Enums\Garden\PlantCategory;
 use App\Enums\Garden\PlantStatus;
+use App\Filament\Garden\Resources\PlantEvents\Schemas\PlantEventForm;
+use App\Models\Plant;
 use App\Models\PlantLocation;
 use App\Models\PlantVariety;
+use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -14,6 +17,8 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 class PlantsTable
 {
@@ -77,6 +82,38 @@ class PlantsTable
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
+                    BulkAction::make('addSharedEvent')
+                        ->label('إضافة حدث جماعي')
+                        ->icon('heroicon-o-calendar-days')
+                        ->modalHeading('إضافة حدث لعدة نباتات')
+                        ->modalDescription('يُطبَّق نفس الحدث على جميع النباتات المحددة.')
+                        ->schema(PlantEventForm::eventFields(includeSharedImage: true))
+                        ->action(function (Collection $records, array $data): void {
+                            DB::transaction(function () use ($records, $data): void {
+                                $imagePath = $data['shared_image'] ?? null;
+                                if (is_array($imagePath)) {
+                                    $imagePath = $imagePath[array_key_first($imagePath)] ?? null;
+                                }
+
+                                /** @var Plant $plant */
+                                foreach ($records as $plant) {
+                                    $event = $plant->events()->create([
+                                        'type' => $data['type'],
+                                        'event_date' => $data['event_date'],
+                                        'notes' => $data['notes'] ?? null,
+                                    ]);
+
+                                    if (filled($imagePath)) {
+                                        $event->images()->create([
+                                            'path' => $imagePath,
+                                            'sort_order' => 0,
+                                        ]);
+                                    }
+                                }
+                            });
+                        })
+                        ->deselectRecordsAfterCompletion()
+                        ->successNotificationTitle('تم إضافة الحدث للنباتات المحددة'),
                     DeleteBulkAction::make(),
                 ]),
             ]);

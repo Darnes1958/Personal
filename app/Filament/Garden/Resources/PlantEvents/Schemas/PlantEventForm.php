@@ -24,19 +24,7 @@ class PlantEventForm
                     ->preload()
                     ->required()
                     ->native(false),
-                Select::make('type')
-                    ->label('نوع الحدث')
-                    ->options(PlantEventType::class)
-                    ->required()
-                    ->native(false),
-                DatePicker::make('event_date')
-                    ->label('التاريخ')
-                    ->default(now())
-                    ->required(),
-                Textarea::make('notes')
-                    ->label('ملاحظات')
-                    ->rows(3)
-                    ->columnSpanFull(),
+                ...self::eventFields(),
                 Repeater::make('images')
                     ->label('الصور')
                     ->relationship()
@@ -58,5 +46,38 @@ class PlantEventForm
                     ->columnSpanFull(),
             ])
             ->columns(2);
+    }
+
+    /**
+     * @return array<int, \Filament\Forms\Components\Component>
+     */
+    public static function eventFields(bool $includeSharedImage = false): array
+    {
+        $fields = [
+            Select::make('type')
+                ->label('نوع الحدث')
+                ->options(PlantEventType::class)
+                ->required()
+                ->native(false),
+            DatePicker::make('event_date')
+                ->label('التاريخ')
+                ->default(now())
+                ->required(),
+            Textarea::make('notes')
+                ->label('ملاحظات')
+                ->rows(3)
+                ->columnSpanFull(),
+        ];
+
+        if ($includeSharedImage) {
+            $fields[] = FileUpload::make('shared_image')
+                ->label('صورة مشتركة (اختياري)')
+                ->image()
+                ->disk('public')
+                ->directory('garden/events')
+                ->columnSpanFull();
+        }
+
+        return $fields;
     }
 }
