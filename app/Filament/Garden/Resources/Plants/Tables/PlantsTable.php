@@ -17,7 +17,7 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class PlantsTable
@@ -25,6 +25,7 @@ class PlantsTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->deselectAllRecordsWhenFiltered(false)
             ->columns([
                 ImageColumn::make('card_image')
                     ->label('الصورة')
@@ -58,10 +59,10 @@ class PlantsTable
                     ->sortable(),
                 TextColumn::make('events_count')
                     ->label('الأحداث')
-                    ->counts('events')
-                    ->sortable(),
+                    ->counts('events'),
             ])
             ->defaultSort('planted_at', 'desc')
+            ->defaultKeySort(false)
             ->filters([
                 SelectFilter::make('category')
                     ->label('التصنيف')
@@ -88,15 +89,19 @@ class PlantsTable
                         ->modalHeading('إضافة حدث لعدة نباتات')
                         ->modalDescription('يُطبَّق نفس الحدث على جميع النباتات المحددة.')
                         ->schema(PlantEventForm::eventFields(includeSharedImage: true))
+                        ->fetchSelectedRecords(false)
                         ->action(function (Collection $records, array $data): void {
-                            DB::transaction(function () use ($records, $data): void {
+                            $plants = Plant::query()
+                                ->whereIn('id', $records->all())
+                                ->get();
+
+                            DB::transaction(function () use ($plants, $data): void {
                                 $imagePath = $data['shared_image'] ?? null;
                                 if (is_array($imagePath)) {
                                     $imagePath = $imagePath[array_key_first($imagePath)] ?? null;
                                 }
 
-                                /** @var Plant $plant */
-                                foreach ($records as $plant) {
+                                foreach ($plants as $plant) {
                                     $event = $plant->events()->create([
                                         'type' => $data['type'],
                                         'event_date' => $data['event_date'],
