@@ -16,6 +16,7 @@ class Plant extends Model
             'category' => PlantCategory::class,
             'status' => PlantStatus::class,
             'planted_at' => 'date',
+            'card_image' => 'array',
         ];
     }
 

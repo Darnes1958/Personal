@@ -28,9 +28,13 @@ class PlantsTable
             ->deselectAllRecordsWhenFiltered(false)
             ->columns([
                 ImageColumn::make('card_image')
-                    ->label('الصورة')
+                    ->label('الصور')
                     ->disk('public')
-                    ->circular(),
+                    ->circular()
+                    ->stacked()
+                    ->limit(3)
+                    ->limitedRemainingText()
+                    ->imageHeight(40),
                 TextColumn::make('name')
                     ->label('الاسم')
                     ->searchable()
@@ -96,24 +100,19 @@ class PlantsTable
                                 ->get();
 
                             DB::transaction(function () use ($plants, $data): void {
-                                $imagePath = $data['shared_image'] ?? null;
-                                if (is_array($imagePath)) {
-                                    $imagePath = $imagePath[array_key_first($imagePath)] ?? null;
+                                $imagePaths = $data['shared_images'] ?? null;
+
+                                if (! is_array($imagePaths)) {
+                                    $imagePaths = filled($imagePaths) ? [$imagePaths] : null;
                                 }
 
                                 foreach ($plants as $plant) {
-                                    $event = $plant->events()->create([
+                                    $plant->events()->create([
                                         'type' => $data['type'],
                                         'event_date' => $data['event_date'],
                                         'notes' => $data['notes'] ?? null,
+                                        'images' => filled($imagePaths) ? array_values($imagePaths) : null,
                                     ]);
-
-                                    if (filled($imagePath)) {
-                                        $event->images()->create([
-                                            'path' => $imagePath,
-                                            'sort_order' => 0,
-                                        ]);
-                                    }
                                 }
                             });
                         })

@@ -16,7 +16,7 @@ class ViewPlant extends ViewRecord
     protected function resolveRecord(int|string $key): \Illuminate\Database\Eloquent\Model
     {
         return parent::resolveRecord($key)->load([
-            'events' => fn ($query) => $query->with(['images' => fn ($query) => $query->orderBy('sort_order')]),
+            'events' => fn ($query) => $query->orderByDesc('event_date'),
             'plantingGuide',
         ]);
     }

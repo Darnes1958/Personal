@@ -20,6 +20,11 @@ class PlantLocation extends Model
         return $this->hasMany(Plant::class);
     }
 
+    public function compostBins(): HasMany
+    {
+        return $this->hasMany(CompostBin::class);
+    }
+
     public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', true);

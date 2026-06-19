@@ -2,23 +2,22 @@
 
 namespace App\Models;
 
-use App\Enums\Garden\PlantEventType;
+use App\Enums\Garden\CompostBinEventType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class PlantEvent extends Model
+class CompostBinEvent extends Model
 {
     protected function casts(): array
     {
         return [
-            'type' => PlantEventType::class,
+            'type' => CompostBinEventType::class,
             'event_date' => 'date',
-            'images' => 'array',
         ];
     }
 
-    public function plant(): BelongsTo
+    public function compostBin(): BelongsTo
     {
-        return $this->belongsTo(Plant::class);
+        return $this->belongsTo(CompostBin::class);
     }
 }

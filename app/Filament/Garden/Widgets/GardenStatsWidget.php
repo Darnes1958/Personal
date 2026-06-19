@@ -2,8 +2,10 @@
 
 namespace App\Filament\Garden\Widgets;
 
+use App\Enums\Garden\CompostBinStage;
 use App\Enums\Garden\GardenTaskStatus;
 use App\Enums\Garden\PlantStatus;
+use App\Models\CompostBin;
 use App\Models\GardenTask;
 use App\Models\Plant;
 use Filament\Widgets\StatsOverviewWidget;
@@ -30,6 +32,10 @@ class GardenStatsWidget extends StatsOverviewWidget
             ->where('status', PlantStatus::Active)
             ->count();
 
+        $activeCompostBins = CompostBin::query()
+            ->where('stage', '!=', CompostBinStage::Empty)
+            ->count();
+
         return [
             Stat::make('مهام اليوم', $todayTasks)
                 ->description('مواعيد اليوم')
@@ -40,6 +46,9 @@ class GardenStatsWidget extends StatsOverviewWidget
             Stat::make('نباتات نشطة', $activePlants)
                 ->description('قيد المتابعة')
                 ->color('primary'),
+            Stat::make('أحواض نشطة', $activeCompostBins)
+                ->description('قيد المعالجة')
+                ->color($activeCompostBins > 0 ? 'warning' : 'gray'),
         ];
     }
 }

@@ -5,10 +5,8 @@ namespace App\Filament\Garden\Resources\PlantEvents\Schemas;
 use App\Enums\Garden\PlantEventType;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
 class PlantEventForm
@@ -25,24 +23,13 @@ class PlantEventForm
                     ->required()
                     ->native(false),
                 ...self::eventFields(),
-                Repeater::make('images')
+                FileUpload::make('images')
                     ->label('الصور')
-                    ->relationship()
-                    ->schema([
-                        FileUpload::make('path')
-                            ->label('الصورة')
-                            ->image()
-                            ->disk('public')
-                            ->directory('garden/events')
-                            ->required(),
-                        TextInput::make('caption')
-                            ->label('وصف الصورة')
-                            ->maxLength(255),
-                    ])
-                    ->orderColumn('sort_order')
-                    ->defaultItems(0)
-                    ->addActionLabel('إضافة صورة')
-                    ->collapsible()
+                    ->image()
+                    ->multiple()
+                    ->reorderable()
+                    ->disk('public')
+                    ->directory('garden/events')
                     ->columnSpanFull(),
             ])
             ->columns(2);
@@ -70,9 +57,11 @@ class PlantEventForm
         ];
 
         if ($includeSharedImage) {
-            $fields[] = FileUpload::make('shared_image')
-                ->label('صورة مشتركة (اختياري)')
+            $fields[] = FileUpload::make('shared_images')
+                ->label('صور مشتركة (اختياري)')
                 ->image()
+                ->multiple()
+                ->reorderable()
                 ->disk('public')
                 ->directory('garden/events')
                 ->columnSpanFull();

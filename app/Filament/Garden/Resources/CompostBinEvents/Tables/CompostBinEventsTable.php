@@ -1,24 +1,23 @@
 <?php
 
-namespace App\Filament\Garden\Resources\PlantEvents\Tables;
+namespace App\Filament\Garden\Resources\CompostBinEvents\Tables;
 
-use App\Enums\Garden\PlantEventType;
+use App\Enums\Garden\CompostBinEventType;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
-class PlantEventsTable
+class CompostBinEventsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('plant.name')
-                    ->label('النبات')
+                TextColumn::make('compostBin.name')
+                    ->label('الحوض')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('type')
@@ -33,23 +32,15 @@ class PlantEventsTable
                     ->label('ملاحظات')
                     ->limit(50)
                     ->toggleable(),
-                ImageColumn::make('images')
-                    ->label('الصور')
-                    ->disk('public')
-                    ->circular()
-                    ->stacked()
-                    ->limit(3)
-                    ->limitedRemainingText()
-                    ->imageHeight(36),
             ])
             ->defaultSort('event_date', 'desc')
             ->filters([
                 SelectFilter::make('type')
                     ->label('نوع الحدث')
-                    ->options(PlantEventType::class),
-                SelectFilter::make('plant_id')
-                    ->label('النبات')
-                    ->relationship('plant', 'name')
+                    ->options(CompostBinEventType::class),
+                SelectFilter::make('compost_bin_id')
+                    ->label('الحوض')
+                    ->relationship('compostBin', 'name')
                     ->searchable()
                     ->preload(),
             ])

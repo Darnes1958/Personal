@@ -17,9 +17,13 @@ class PlantInfolist
                 Section::make('معلومات النبات')
                     ->schema([
                         ImageEntry::make('card_image')
-                            ->label('صورة البطاقة')
+                            ->label('صور البطاقة')
                             ->disk('public')
-                            ->height(120),
+                            ->circular()
+                            ->stacked()
+                            ->limit(5)
+                            ->limitedRemainingText()
+                            ->imageHeight(80),
                         TextEntry::make('name')
                             ->label('الاسم'),
                         TextEntry::make('plantVariety.name')
@@ -60,18 +64,14 @@ class PlantInfolist
                                 TextEntry::make('notes')
                                     ->label('الملاحظة')
                                     ->placeholder('—'),
-                                RepeatableEntry::make('images')
+                                ImageEntry::make('images')
                                     ->label('الصور')
-                                    ->schema([
-                                        ImageEntry::make('path')
-                                            ->label('')
-                                            ->disk('public')
-                                            ->height(80),
-                                        TextEntry::make('caption')
-                                            ->label('الوصف')
-                                            ->placeholder('—'),
-                                    ])
-                                    ->columns(2),
+                                    ->disk('public')
+                                    ->circular()
+                                    ->stacked()
+                                    ->limit(5)
+                                    ->limitedRemainingText()
+                                    ->imageHeight(80),
                             ])
                             ->columns(1),
                     ])

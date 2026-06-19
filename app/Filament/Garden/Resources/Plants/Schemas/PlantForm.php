@@ -83,11 +83,14 @@ class PlantForm
                     ->required()
                     ->native(false),
                 FileUpload::make('card_image')
-                    ->label('صورة البطاقة')
+                    ->label('صور البطاقة')
                     ->image()
+                    ->multiple()
+                    ->reorderable()
                     ->disk('public')
                     ->directory('garden/plants/cards')
-                    ->imageEditor(),
+                    ->imageEditor()
+                    ->columnSpanFull(),
                 Textarea::make('notes')
                     ->label('ملاحظات')
                     ->rows(3)
