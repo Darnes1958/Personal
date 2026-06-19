@@ -9,6 +9,7 @@ enum PlantCategory: string implements HasColor, HasLabel
 {
     case Tree = 'tree';
     case Vegetable = 'vegetable';
+    case Fruit = 'fruit';
     case Ornamental = 'ornamental';
     case Aromatic = 'aromatic';
     public function getLabel(): ?string
@@ -16,6 +17,7 @@ enum PlantCategory: string implements HasColor, HasLabel
         return match ($this) {
             self::Tree => 'شجر',
             self::Vegetable => 'خضروات',
+            self::Fruit => 'فاكهة',
             self::Ornamental => 'زينة',
             self::Aromatic => 'عطرية',
         };
@@ -26,6 +28,7 @@ enum PlantCategory: string implements HasColor, HasLabel
         return match ($this) {
             self::Tree => 'success',
             self::Vegetable => 'info',
+            self::Fruit => 'danger',
             self::Ornamental => 'warning',
             self::Aromatic => 'primary',
         };
