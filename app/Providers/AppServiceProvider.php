@@ -123,6 +123,8 @@ class AppServiceProvider extends ServiceProvider
             storage_path('app/private/livewire-tmp'),
             storage_path('app/public/garden/plants/cards'),
             storage_path('app/public/garden/events'),
+            storage_path('app/public/garden/input-applications/before'),
+            storage_path('app/public/garden/input-applications/after'),
         ];
 
         foreach ($directories as $directory) {

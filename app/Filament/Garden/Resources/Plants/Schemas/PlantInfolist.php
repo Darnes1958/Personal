@@ -76,6 +76,38 @@ class PlantInfolist
                             ->columns(1),
                     ])
                     ->collapsible(),
+                Section::make('تطبيقات الأسمدة والمبيدات')
+                    ->schema([
+                        RepeatableEntry::make('inputApplications')
+                            ->label('')
+                            ->schema([
+                                TextEntry::make('applied_at')
+                                    ->label('التاريخ')
+                                    ->date(),
+                                TextEntry::make('inputGuide.name')
+                                    ->label('من الدليل')
+                                    ->placeholder('—'),
+                                TextEntry::make('phenomenon')
+                                    ->label('الظاهرة')
+                                    ->placeholder('—'),
+                                ImageEntry::make('before_images')
+                                    ->label('قبل')
+                                    ->disk('public')
+                                    ->stacked()
+                                    ->limit(3)
+                                    ->limitedRemainingText()
+                                    ->imageHeight(60),
+                                ImageEntry::make('after_images')
+                                    ->label('بعد')
+                                    ->disk('public')
+                                    ->stacked()
+                                    ->limit(3)
+                                    ->limitedRemainingText()
+                                    ->imageHeight(60),
+                            ])
+                            ->columns(1),
+                    ])
+                    ->collapsible(),
             ]);
     }
 }

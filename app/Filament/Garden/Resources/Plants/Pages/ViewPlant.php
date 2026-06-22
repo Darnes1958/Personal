@@ -3,6 +3,7 @@
 namespace App\Filament\Garden\Resources\Plants\Pages;
 
 use App\Filament\Garden\Resources\PlantEvents\PlantEventResource;
+use App\Filament\Garden\Resources\PlantInputApplications\PlantInputApplicationResource;
 use App\Filament\Garden\Resources\Plants\PlantResource;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
@@ -17,6 +18,7 @@ class ViewPlant extends ViewRecord
     {
         return parent::resolveRecord($key)->load([
             'events',
+            'inputApplications.inputGuide',
             'plantingGuide',
         ]);
     }
@@ -28,6 +30,10 @@ class ViewPlant extends ViewRecord
                 ->label('تسجيل حدث')
                 ->icon('heroicon-o-plus')
                 ->url(fn () => PlantEventResource::getUrl('create', ['plant_id' => $this->record->id])),
+            Action::make('addInputApplication')
+                ->label('تطبيق سماد / مبيد')
+                ->icon('heroicon-o-beaker')
+                ->url(fn () => PlantInputApplicationResource::getUrl('create', ['plant_id' => $this->record->id])),
             EditAction::make(),
             DeleteAction::make(),
         ];

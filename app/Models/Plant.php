@@ -44,4 +44,9 @@ class Plant extends Model
     {
         return $this->hasMany(GardenTask::class);
     }
+
+    public function inputApplications(): HasMany
+    {
+        return $this->hasMany(PlantInputApplication::class)->orderByDesc('applied_at');
+    }
 }
