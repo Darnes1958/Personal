@@ -12,6 +12,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class PlantingGuidesTable
 {
@@ -51,6 +52,12 @@ class PlantingGuidesTable
                     ->boolean(),
             ])
             ->filters([
+                SelectFilter::make('planting_month')
+                    ->label('شهر الزراعة')
+                    ->options(PlantingGuide::monthOptions())
+                    ->query(fn (Builder $query, array $data): Builder => filled($data['value'])
+                        ? $query->plantableInMonth((int) $data['value'])
+                        : $query),
                 SelectFilter::make('category')
                     ->label('التصنيف')
                     ->options(PlantCategory::class),

@@ -56,13 +56,56 @@ class PlantingGuide extends Model
     public static function plantableInMonth(int $month): Collection
     {
         return static::active()
+            ->plantableInMonth($month)
             ->orderBy('name')
-            ->get()
-            ->filter(fn (PlantingGuide $guide) => $guide->monthOverlapsRange(
-                $month,
-                $guide->planting_start,
-                $guide->planting_end,
-            ));
+            ->get();
+    }
+
+    public function scopePlantableInMonth(Builder $query, int $month): Builder
+    {
+        $driver = $query->getConnection()->getDriverName();
+
+        $startMonthExpr = match ($driver) {
+            'sqlsrv' => 'CAST(LEFT(planting_start, 2) AS INT)',
+            default => 'CAST(SUBSTR(planting_start, 1, 2) AS INTEGER)',
+        };
+
+        $endMonthExpr = match ($driver) {
+            'sqlsrv' => 'CAST(LEFT(planting_end, 2) AS INT)',
+            default => 'CAST(SUBSTR(planting_end, 2) AS INTEGER)',
+        };
+
+        return $query->where(function (Builder $query) use ($month, $startMonthExpr, $endMonthExpr) {
+            $query->where(function (Builder $query) use ($month, $startMonthExpr, $endMonthExpr) {
+                $query->whereRaw("{$startMonthExpr} <= {$endMonthExpr}")
+                    ->whereRaw("? BETWEEN {$startMonthExpr} AND {$endMonthExpr}", [$month]);
+            })->orWhere(function (Builder $query) use ($month, $startMonthExpr, $endMonthExpr) {
+                $query->whereRaw("{$startMonthExpr} > {$endMonthExpr}")
+                    ->where(function (Builder $query) use ($month, $startMonthExpr, $endMonthExpr) {
+                        $query->whereRaw("? >= {$startMonthExpr}", [$month])
+                            ->orWhereRaw("? <= {$endMonthExpr}", [$month]);
+                    });
+            });
+        });
+    }
+
+    /** @return array<int, string> */
+    public static function monthOptions(): array
+    {
+        return [
+            1 => '1 — يناير',
+            2 => '2 — فبراير',
+            3 => '3 — مارس',
+            4 => '4 — أبريل',
+            5 => '5 — مايو',
+            6 => '6 — يونيو',
+            7 => '7 — يوليو',
+            8 => '8 — أغسطس',
+            9 => '9 — سبتمبر',
+            10 => '10 — أكتوبر',
+            11 => '11 — نوفمبر',
+            12 => '12 — ديسمبر',
+        ];
     }
 
     public function monthOverlapsRange(int $month, string $start, string $end): bool
