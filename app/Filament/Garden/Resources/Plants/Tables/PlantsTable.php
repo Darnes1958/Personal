@@ -5,6 +5,7 @@ namespace App\Filament\Garden\Resources\Plants\Tables;
 use App\Enums\Garden\PlantCategory;
 use App\Enums\Garden\PlantStatus;
 use App\Filament\Garden\Resources\PlantEvents\Schemas\PlantEventForm;
+use App\Filament\Garden\Resources\PlantInputApplications\Schemas\PlantInputApplicationForm;
 use App\Models\Plant;
 use App\Models\PlantLocation;
 use App\Models\PlantVariety;
@@ -118,8 +119,50 @@ class PlantsTable
                         })
                         ->deselectRecordsAfterCompletion()
                         ->successNotificationTitle('تم إضافة الحدث للنباتات المحددة'),
+                    BulkAction::make('addSharedInputApplication')
+                        ->label('تطبيق تغذية/وقاية جماعي')
+                        ->icon('heroicon-o-beaker')
+                        ->modalHeading('تطبيق تغذية أو وقاية لعدة نباتات')
+                        ->modalDescription('يُطبَّق نفس التطبيق على جميع النباتات المحددة.')
+                        ->schema(PlantInputApplicationForm::applicationFields(includeSharedImages: true))
+                        ->fetchSelectedRecords(false)
+                        ->action(function (Collection $records, array $data): void {
+                            $plants = Plant::query()
+                                ->whereIn('id', $records->all())
+                                ->get();
+
+                            DB::transaction(function () use ($plants, $data): void {
+                                $beforeImages = self::normalizeImagePaths($data['shared_before_images'] ?? null);
+                                $afterImages = self::normalizeImagePaths($data['shared_after_images'] ?? null);
+
+                                foreach ($plants as $plant) {
+                                    $plant->inputApplications()->create([
+                                        'input_guide_id' => $data['input_guide_id'] ?? null,
+                                        'applied_at' => $data['applied_at'],
+                                        'phenomenon' => $data['phenomenon'] ?? null,
+                                        'notes' => $data['notes'] ?? null,
+                                        'before_images' => $beforeImages,
+                                        'after_images' => $afterImages,
+                                    ]);
+                                }
+                            });
+                        })
+                        ->deselectRecordsAfterCompletion()
+                        ->successNotificationTitle('تم إضافة التطبيق للنباتات المحددة'),
                     DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    /**
+     * @return array<int, string>|null
+     */
+    protected static function normalizeImagePaths(mixed $paths): ?array
+    {
+        if (! is_array($paths)) {
+            $paths = filled($paths) ? [$paths] : null;
+        }
+
+        return filled($paths) ? array_values($paths) : null;
     }
 }
