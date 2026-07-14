@@ -4,6 +4,7 @@ namespace App\Filament\Garden\Resources\GardenTasks\Tables;
 
 use App\Enums\Garden\GardenTaskStatus;
 use App\Enums\Garden\GardenTaskType;
+use App\Filament\Garden\Support\GardenFormats;
 use App\Models\GardenTask;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
@@ -32,7 +33,7 @@ class GardenTasksTable
                     ->badge(),
                 TextColumn::make('due_date')
                     ->label('الموعد')
-                    ->date()
+                    ->date(GardenFormats::TABLE_DATE)
                     ->sortable(),
                 TextColumn::make('status')
                     ->label('الحالة')

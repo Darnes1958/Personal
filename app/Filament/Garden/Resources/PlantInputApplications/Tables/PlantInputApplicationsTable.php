@@ -2,11 +2,11 @@
 
 namespace App\Filament\Garden\Resources\PlantInputApplications\Tables;
 
+use App\Filament\Garden\Support\GardenFormats;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -28,29 +28,18 @@ class PlantInputApplicationsTable
                     ->sortable(),
                 TextColumn::make('applied_at')
                     ->label('التاريخ')
-                    ->date()
+                    ->date(GardenFormats::TABLE_DATE)
                     ->sortable(),
                 TextColumn::make('phenomenon')
                     ->label('الظاهرة')
                     ->limit(30)
                     ->placeholder('—')
                     ->toggleable(),
-                ImageColumn::make('before_images')
-                    ->label('قبل')
-                    ->disk('public')
-                    ->circular()
-                    ->stacked()
-                    ->limit(2)
-                    ->limitedRemainingText()
-                    ->imageHeight(36),
-                ImageColumn::make('after_images')
-                    ->label('بعد')
-                    ->disk('public')
-                    ->circular()
-                    ->stacked()
-                    ->limit(2)
-                    ->limitedRemainingText()
-                    ->imageHeight(36),
+                TextColumn::make('notes')
+                    ->label('ملاحظات')
+                    ->limit(50)
+                    ->placeholder('—')
+                    ->toggleable(),
             ])
             ->defaultSort('applied_at', 'desc')
             ->filters([

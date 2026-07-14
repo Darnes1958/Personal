@@ -5,6 +5,7 @@ namespace App\Filament\Garden\Resources\Plants\Tables;
 use App\Enums\Garden\PlantCategory;
 use App\Enums\Garden\PlantStatus;
 use App\Filament\Garden\Resources\PlantEvents\Schemas\PlantEventForm;
+use App\Filament\Garden\Support\GardenFormats;
 use App\Filament\Garden\Resources\PlantInputApplications\Schemas\PlantInputApplicationForm;
 use App\Models\Plant;
 use App\Models\PlantLocation;
@@ -51,7 +52,7 @@ class PlantsTable
                     ->sortable(),
                 TextColumn::make('planted_at')
                     ->label('تاريخ الزراعة')
-                    ->date()
+                    ->date(GardenFormats::TABLE_DATE)
                     ->sortable(),
                 TextColumn::make('plantLocation.name')
                     ->label('الموقع')

@@ -3,6 +3,7 @@
 namespace App\Filament\Garden\Resources\CompostBinEvents\Tables;
 
 use App\Enums\Garden\CompostBinEventType;
+use App\Filament\Garden\Support\GardenFormats;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -26,7 +27,7 @@ class CompostBinEventsTable
                     ->sortable(),
                 TextColumn::make('event_date')
                     ->label('التاريخ')
-                    ->date()
+                    ->date(GardenFormats::TABLE_DATE)
                     ->sortable(),
                 TextColumn::make('notes')
                     ->label('ملاحظات')

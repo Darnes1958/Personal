@@ -3,6 +3,7 @@
 namespace App\Filament\Garden\Resources\PlantEvents\Tables;
 
 use App\Enums\Garden\PlantEventType;
+use App\Filament\Garden\Support\GardenFormats;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -27,7 +28,7 @@ class PlantEventsTable
                     ->sortable(),
                 TextColumn::make('event_date')
                     ->label('التاريخ')
-                    ->date()
+                    ->date(GardenFormats::TABLE_DATE)
                     ->sortable(),
                 TextColumn::make('notes')
                     ->label('ملاحظات')

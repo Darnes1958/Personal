@@ -6,6 +6,7 @@ use App\Enums\Garden\CompostBinEventType;
 use App\Enums\Garden\CompostBinStage;
 use App\Enums\Garden\CompostMaterialType;
 use App\Filament\Garden\Resources\CompostBinEvents\CompostBinEventResource;
+use App\Filament\Garden\Support\GardenFormats;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -36,7 +37,7 @@ class CompostBinsTable
                     ->sortable(),
                 TextColumn::make('stage_started_at')
                     ->label('بداية المرحلة')
-                    ->date()
+                    ->date(GardenFormats::TABLE_DATE)
                     ->sortable()
                     ->placeholder('—'),
                 TextColumn::make('days_in_stage')
