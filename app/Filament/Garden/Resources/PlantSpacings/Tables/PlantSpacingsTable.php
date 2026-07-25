@@ -43,7 +43,7 @@ class PlantSpacingsTable
                     ->placeholder('—')
                     ->toggleable(),
             ])
-            ->defaultSort('id', 'desc')
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 SelectFilter::make('planting_guide_id')
                     ->label('المحصول')
