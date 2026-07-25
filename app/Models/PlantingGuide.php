@@ -28,6 +28,11 @@ class PlantingGuide extends Model
         return $this->hasMany(Plant::class);
     }
 
+    public function spacings(): HasMany
+    {
+        return $this->hasMany(PlantSpacing::class);
+    }
+
     public function isPlantableOn(string $monthDay): bool
     {
         return $this->isDateInRange($monthDay, $this->planting_start, $this->planting_end);
