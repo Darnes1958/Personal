@@ -11,9 +11,12 @@ return new class extends Migration
         Schema::create('plant_spacings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('planting_guide_id')->constrained('planting_guides')->cascadeOnDelete();
-            $table->unsignedSmallInteger('row_spacing_cm');
-            $table->unsignedSmallInteger('plant_spacing_cm');
-            $table->unsignedSmallInteger('depth_cm')->nullable();
+            $table->unsignedSmallInteger('row_spacing_from_cm');
+            $table->unsignedSmallInteger('row_spacing_to_cm');
+            $table->unsignedSmallInteger('plant_spacing_from_cm');
+            $table->unsignedSmallInteger('plant_spacing_to_cm');
+            $table->unsignedSmallInteger('depth_from_cm')->nullable();
+            $table->unsignedSmallInteger('depth_to_cm')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
         });

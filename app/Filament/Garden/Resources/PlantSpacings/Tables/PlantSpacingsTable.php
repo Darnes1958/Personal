@@ -2,6 +2,7 @@
 
 namespace App\Filament\Garden\Resources\PlantSpacings\Tables;
 
+use App\Models\PlantSpacing;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -23,17 +24,17 @@ class PlantSpacingsTable
                     ->label('الدفعة')
                     ->placeholder('—')
                     ->toggleable(),
-                TextColumn::make('row_spacing_cm')
+                TextColumn::make('row_spacing_from_cm')
                     ->label('بين الخطوط')
-                    ->suffix(' سم')
+                    ->state(fn (PlantSpacing $record): ?string => $record->rowSpacingLabel())
                     ->sortable(),
-                TextColumn::make('plant_spacing_cm')
+                TextColumn::make('plant_spacing_from_cm')
                     ->label('بين النباتات')
-                    ->suffix(' سم')
+                    ->state(fn (PlantSpacing $record): ?string => $record->plantSpacingLabel())
                     ->sortable(),
-                TextColumn::make('depth_cm')
+                TextColumn::make('depth_from_cm')
                     ->label('العمق')
-                    ->suffix(' سم')
+                    ->state(fn (PlantSpacing $record): ?string => $record->depthLabel())
                     ->placeholder('—')
                     ->sortable(),
                 TextColumn::make('notes')

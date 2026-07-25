@@ -7,6 +7,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 
 class PlantSpacingForm
@@ -15,7 +16,7 @@ class PlantSpacingForm
     {
         return $schema
             ->components([
-                Section::make('المسافات')
+                Section::make('المحصول')
                     ->schema([
                         Select::make('planting_guide_id')
                             ->label('المحصول (دليل الزراعة)')
@@ -30,31 +31,67 @@ class PlantSpacingForm
                             ->searchable()
                             ->preload()
                             ->required()
-                            ->native(false)
-                            ->columnSpanFull(),
-                        TextInput::make('row_spacing_cm')
-                            ->label('المسافة بين الخطوط (سم)')
+                            ->native(false),
+                    ]),
+                Section::make('المسافة بين الخطوط')
+                    ->schema([
+                        TextInput::make('row_spacing_from_cm')
+                            ->label('من')
                             ->numeric()
                             ->integer()
                             ->minValue(1)
                             ->required()
                             ->suffix('سم'),
-                        TextInput::make('plant_spacing_cm')
-                            ->label('المسافة بين النباتات (سم)')
+                        TextInput::make('row_spacing_to_cm')
+                            ->label('إلى')
+                            ->numeric()
+                            ->integer()
+                            ->minValue(1)
+                            ->required()
+                            ->suffix('سم')
+                            ->gte('row_spacing_from_cm'),
+                    ])
+                    ->columns(2),
+                Section::make('المسافة بين النباتات')
+                    ->schema([
+                        TextInput::make('plant_spacing_from_cm')
+                            ->label('من')
                             ->numeric()
                             ->integer()
                             ->minValue(1)
                             ->required()
                             ->suffix('سم'),
-                        TextInput::make('depth_cm')
-                            ->label('العمق (سم)')
+                        TextInput::make('plant_spacing_to_cm')
+                            ->label('إلى')
+                            ->numeric()
+                            ->integer()
+                            ->minValue(1)
+                            ->required()
+                            ->suffix('سم')
+                            ->gte('plant_spacing_from_cm'),
+                    ])
+                    ->columns(2),
+                Section::make('العمق')
+                    ->description('اختياري')
+                    ->schema([
+                        TextInput::make('depth_from_cm')
+                            ->label('من')
                             ->numeric()
                             ->integer()
                             ->minValue(1)
                             ->nullable()
                             ->suffix('سم'),
+                        TextInput::make('depth_to_cm')
+                            ->label('إلى')
+                            ->numeric()
+                            ->integer()
+                            ->minValue(1)
+                            ->nullable()
+                            ->suffix('سم')
+                            ->gte('depth_from_cm')
+                            ->required(fn (Get $get): bool => filled($get('depth_from_cm'))),
                     ])
-                    ->columns(3),
+                    ->columns(2),
                 Textarea::make('notes')
                     ->label('ملاحظات')
                     ->rows(3)
