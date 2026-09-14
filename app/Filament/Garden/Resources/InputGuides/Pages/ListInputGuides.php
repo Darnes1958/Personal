@@ -2,12 +2,14 @@
 
 namespace App\Filament\Garden\Resources\InputGuides\Pages;
 
+use App\Filament\Garden\Concerns\AvoidsDuplicateOrderByOnSelectedRecords;
 use App\Filament\Garden\Resources\InputGuides\InputGuideResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
 class ListInputGuides extends ListRecords
 {
+    use AvoidsDuplicateOrderByOnSelectedRecords;
     protected static string $resource = InputGuideResource::class;
 
     protected function getHeaderActions(): array

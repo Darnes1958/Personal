@@ -50,6 +50,7 @@ class PlantEventsTable
                     ->imageHeight(36),
             ])
             ->defaultSort('event_date', 'desc')
+            ->defaultKeySort(false)
             ->filters([
                 SelectFilter::make('type')
                     ->label('نوع الحدث')

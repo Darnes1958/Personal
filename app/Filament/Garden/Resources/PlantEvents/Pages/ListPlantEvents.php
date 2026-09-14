@@ -2,12 +2,15 @@
 
 namespace App\Filament\Garden\Resources\PlantEvents\Pages;
 
+use App\Filament\Garden\Concerns\AvoidsDuplicateOrderByOnSelectedRecords;
 use App\Filament\Garden\Resources\PlantEvents\PlantEventResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
 class ListPlantEvents extends ListRecords
 {
+    use AvoidsDuplicateOrderByOnSelectedRecords;
+
     protected static string $resource = PlantEventResource::class;
 
     protected function getHeaderActions(): array
