@@ -5,8 +5,8 @@ namespace App\Filament\Garden\Resources\Plants\Pages;
 use App\Filament\Garden\Resources\PlantEvents\PlantEventResource;
 use App\Filament\Garden\Resources\PlantInputApplications\PlantInputApplicationResource;
 use App\Filament\Garden\Resources\Plants\PlantResource;
+use App\Filament\Garden\Support\PlantArchiveActions;
 use Filament\Actions\Action;
-use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 
@@ -16,11 +16,7 @@ class ViewPlant extends ViewRecord
 
     protected function resolveRecord(int|string $key): \Illuminate\Database\Eloquent\Model
     {
-        return parent::resolveRecord($key)->load([
-            'events',
-            'inputApplications.inputGuide',
-            'plantingGuide',
-        ]);
+        return parent::resolveRecord($key)->loadForView();
     }
 
     protected function getHeaderActions(): array
@@ -35,7 +31,7 @@ class ViewPlant extends ViewRecord
                 ->icon('heroicon-o-beaker')
                 ->url(fn () => PlantInputApplicationResource::getUrl('create', ['plant_id' => $this->record->id])),
             EditAction::make(),
-            DeleteAction::make(),
+            PlantArchiveActions::archiveAction(),
         ];
     }
 }

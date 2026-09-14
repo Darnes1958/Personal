@@ -25,6 +25,9 @@ class TodayTasksWidget extends TableWidget
                 GardenTask::query()
                     ->whereDate('due_date', now()->toDateString())
                     ->whereIn('status', [GardenTaskStatus::Pending, GardenTaskStatus::Overdue])
+                    ->where(function ($query): void {
+                        $query->whereNull('plant_id')->orWhereHas('plant');
+                    })
                     ->orderBy('due_date')
             )
             ->columns([

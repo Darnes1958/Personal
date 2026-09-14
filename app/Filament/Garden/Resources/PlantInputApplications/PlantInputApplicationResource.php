@@ -15,6 +15,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use UnitEnum;
 
 class PlantInputApplicationResource extends Resource
@@ -46,6 +47,11 @@ class PlantInputApplicationResource extends Resource
     public static function table(Table $table): Table
     {
         return PlantInputApplicationsTable::configure($table);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->whereHas('plant');
     }
 
     public static function getRelations(): array

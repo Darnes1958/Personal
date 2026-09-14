@@ -3,7 +3,7 @@
 namespace App\Filament\Garden\Resources\Plants\Pages;
 
 use App\Filament\Garden\Resources\Plants\PlantResource;
-use Filament\Actions\DeleteAction;
+use App\Filament\Garden\Support\PlantArchiveActions;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
 
@@ -15,7 +15,7 @@ class EditPlant extends EditRecord
     {
         return [
             ViewAction::make(),
-            DeleteAction::make(),
+            PlantArchiveActions::archiveAction(),
         ];
     }
 }

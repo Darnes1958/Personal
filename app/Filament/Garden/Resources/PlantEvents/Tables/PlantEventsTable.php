@@ -4,6 +4,7 @@ namespace App\Filament\Garden\Resources\PlantEvents\Tables;
 
 use App\Enums\Garden\PlantEventType;
 use App\Filament\Garden\Support\GardenFormats;
+use App\Models\PlantEvent;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -30,6 +31,11 @@ class PlantEventsTable
                     ->label('التاريخ')
                     ->date(GardenFormats::TABLE_DATE)
                     ->sortable(),
+                TextColumn::make('days_since_planting')
+                    ->label('أيام من الزراعة')
+                    ->state(fn (PlantEvent $record): ?int => $record->daysSincePlanting())
+                    ->formatStateUsing(fn (?int $state): string => $state === null ? '—' : $state.' يوم')
+                    ->placeholder('—'),
                 TextColumn::make('notes')
                     ->label('ملاحظات')
                     ->limit(50)

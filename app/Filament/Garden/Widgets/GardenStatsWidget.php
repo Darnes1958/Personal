@@ -22,10 +22,16 @@ class GardenStatsWidget extends StatsOverviewWidget
         $todayTasks = GardenTask::query()
             ->whereDate('due_date', now()->toDateString())
             ->whereIn('status', [GardenTaskStatus::Pending, GardenTaskStatus::Overdue])
+            ->where(function ($query): void {
+                $query->whereNull('plant_id')->orWhereHas('plant');
+            })
             ->count();
 
         $overdueTasks = GardenTask::query()
             ->where('status', GardenTaskStatus::Overdue)
+            ->where(function ($query): void {
+                $query->whereNull('plant_id')->orWhereHas('plant');
+            })
             ->count();
 
         $activePlants = Plant::query()

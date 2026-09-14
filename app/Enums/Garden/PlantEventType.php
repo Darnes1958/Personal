@@ -8,6 +8,7 @@ use Filament\Support\Contracts\HasLabel;
 enum PlantEventType: string implements HasColor, HasLabel
 {
     case Planting = 'planting';
+    case Emergence = 'emergence';
     case Fertilizing = 'fertilizing';
     case Watering = 'watering';
     case Growth = 'growth';
@@ -22,6 +23,7 @@ enum PlantEventType: string implements HasColor, HasLabel
     {
         return match ($this) {
             self::Planting => 'زراعة',
+            self::Emergence => 'ظهور',
             self::Fertilizing => 'تسميد',
             self::Watering => 'ري',
             self::Growth => 'نمو',
@@ -38,6 +40,7 @@ enum PlantEventType: string implements HasColor, HasLabel
     {
         return match ($this) {
             self::Planting => 'success',
+            self::Emergence => 'warning',
             self::Fertilizing => 'info',
             self::Watering => 'primary',
             self::Growth => 'success',

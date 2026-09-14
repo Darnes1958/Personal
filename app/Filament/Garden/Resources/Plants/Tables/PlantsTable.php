@@ -6,13 +6,13 @@ use App\Enums\Garden\PlantCategory;
 use App\Enums\Garden\PlantStatus;
 use App\Filament\Garden\Resources\PlantEvents\Schemas\PlantEventForm;
 use App\Filament\Garden\Support\GardenFormats;
+use App\Filament\Garden\Support\PlantArchiveActions;
 use App\Filament\Garden\Resources\PlantInputApplications\Schemas\PlantInputApplicationForm;
 use App\Models\Plant;
 use App\Models\PlantLocation;
 use App\Models\PlantVariety;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\ImageColumn;
@@ -86,6 +86,7 @@ class PlantsTable
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
+                PlantArchiveActions::archiveAction(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
@@ -150,7 +151,7 @@ class PlantsTable
                         })
                         ->deselectRecordsAfterCompletion()
                         ->successNotificationTitle('تم إضافة التطبيق للنباتات المحددة'),
-                    DeleteBulkAction::make(),
+                    PlantArchiveActions::archiveBulkAction(),
                 ]),
             ]);
     }

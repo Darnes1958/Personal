@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use UnitEnum;
 
 class GardenTaskResource extends Resource
@@ -39,6 +40,14 @@ class GardenTaskResource extends Resource
     public static function table(Table $table): Table
     {
         return GardenTasksTable::configure($table);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->where(function (Builder $query): void {
+                $query->whereNull('plant_id')->orWhereHas('plant');
+            });
     }
 
     public static function getRelations(): array

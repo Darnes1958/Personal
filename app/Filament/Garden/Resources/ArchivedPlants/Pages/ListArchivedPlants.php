@@ -1,28 +1,18 @@
 <?php
 
-namespace App\Filament\Garden\Resources\Plants\Pages;
+namespace App\Filament\Garden\Resources\ArchivedPlants\Pages;
 
 use App\Filament\Garden\Resources\ArchivedPlants\ArchivedPlantResource;
-use App\Filament\Garden\Resources\Plants\PlantResource;
-use Filament\Actions\Action;
-use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
 
-class ListPlants extends ListRecords
+class ListArchivedPlants extends ListRecords
 {
-    protected static string $resource = PlantResource::class;
+    protected static string $resource = ArchivedPlantResource::class;
 
     protected function getHeaderActions(): array
     {
-        return [
-            Action::make('openArchive')
-                ->label('الأرشيف')
-                ->icon('heroicon-o-archive-box')
-                ->color('gray')
-                ->url(ArchivedPlantResource::getUrl()),
-            CreateAction::make(),
-        ];
+        return [];
     }
 
     /**

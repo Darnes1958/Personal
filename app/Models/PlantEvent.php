@@ -21,4 +21,18 @@ class PlantEvent extends Model
     {
         return $this->belongsTo(Plant::class);
     }
+
+    public function daysSincePlanting(): ?int
+    {
+        $plantedAt = $this->plant?->planted_at;
+
+        if ($plantedAt === null || $this->event_date === null) {
+            return null;
+        }
+
+        return (int) $plantedAt->copy()->startOfDay()->diffInDays(
+            $this->event_date->copy()->startOfDay(),
+            false,
+        );
+    }
 }
