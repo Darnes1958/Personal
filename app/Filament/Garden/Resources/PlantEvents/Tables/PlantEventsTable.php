@@ -31,10 +31,12 @@ class PlantEventsTable
                     ->label('التاريخ')
                     ->date(GardenFormats::TABLE_DATE)
                     ->sortable(),
-                TextColumn::make('days_since_planting')
-                    ->label('أيام من الزراعة')
-                    ->state(fn (PlantEvent $record): ?int => $record->daysSincePlanting())
-                    ->formatStateUsing(fn (?int $state): string => $state === null ? '—' : $state.' يوم')
+                TextColumn::make('plant_age')
+                    ->label('عمر النبات')
+                    ->state(fn (PlantEvent $record): ?string => GardenFormats::ageSince(
+                        $record->plant?->planted_at,
+                        $record->event_date,
+                    ))
                     ->placeholder('—'),
                 TextColumn::make('notes')
                     ->label('ملاحظات')
