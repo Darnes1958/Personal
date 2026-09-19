@@ -49,20 +49,30 @@ class PlantsTable
                 TextColumn::make('category')
                     ->label('التصنيف')
                     ->badge()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('planted_at')
                     ->label('تاريخ الزراعة')
                     ->date(GardenFormats::TABLE_DATE)
                     ->sortable(),
+                TextColumn::make('age')
+                    ->label('العمر')
+                    ->state(fn (Plant $record): ?string => GardenFormats::ageSince($record->planted_at))
+                    ->placeholder('—')
+                    ->sortable(query: function ($query, string $direction) {
+                        return $query->orderBy('planted_at', $direction === 'asc' ? 'desc' : 'asc');
+                    }),
                 TextColumn::make('plantLocation.name')
                     ->label('الموقع')
                     ->searchable()
                     ->sortable()
-                    ->placeholder('—'),
+                    ->placeholder('—')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('status')
                     ->label('الحالة')
                     ->badge()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('events_count')
                     ->label('الأحداث')
                     ->counts('events'),
