@@ -9,6 +9,7 @@ enum PlantEventType: string implements HasColor, HasLabel
 {
     case Planting = 'planting';
     case Emergence = 'emergence';
+    case TransplantSeedlings = 'transplant_seedlings';
     case Fertilizing = 'fertilizing';
     case Watering = 'watering';
     case Growth = 'growth';
@@ -24,6 +25,7 @@ enum PlantEventType: string implements HasColor, HasLabel
         return match ($this) {
             self::Planting => 'زراعة',
             self::Emergence => 'ظهور',
+            self::TransplantSeedlings => 'نقل شتلات',
             self::Fertilizing => 'تسميد',
             self::Watering => 'ري',
             self::Growth => 'نمو',
@@ -41,6 +43,7 @@ enum PlantEventType: string implements HasColor, HasLabel
         return match ($this) {
             self::Planting => 'success',
             self::Emergence => 'warning',
+            self::TransplantSeedlings => 'info',
             self::Fertilizing => 'info',
             self::Watering => 'primary',
             self::Growth => 'success',
